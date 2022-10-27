@@ -1,6 +1,5 @@
 package com.geezylucas.springbootunittesting.domain.service.impl;
 
-import com.geezylucas.springbootunittesting.domain.exception.SaveEmployeeException;
 import com.geezylucas.springbootunittesting.domain.model.Employee;
 import com.geezylucas.springbootunittesting.domain.service.EmployeeService;
 import com.geezylucas.springbootunittesting.infrastructure.repository.EmployeeRepository;
@@ -16,17 +15,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public Employee save(Employee employee) {
-        if (employee.getId() == null) {
-            return employeeRepository.save(employee);
-        }
+    public Employee create(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 
-        return employeeRepository.findById(employee.getId())
+    @Override
+    public Employee update(Employee employee, Integer id) {
+        return employeeRepository.findById(id)
                 .map(e -> {
                     e.setFirstName(employee.getFirstName());
                     e.setLastName(employee.getLastName());
                     return employeeRepository.save(e);
-                }).orElseThrow(SaveEmployeeException::new);
+                })
+                .orElseGet(() -> {
+                    employee.setId(id);
+                    return employeeRepository.save(employee);
+                });
     }
 
     @Override
