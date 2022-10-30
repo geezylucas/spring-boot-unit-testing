@@ -1,15 +1,15 @@
 package com.geezylucas.springbootunittesting.domain.service;
 
-import com.geezylucas.springbootunittesting.domain.model.Employee;
+import com.geezylucas.springbootunittesting.application.controller.dto.EmployeeDTO;
 
 import java.util.List;
 
 public interface EmployeeService {
-    Employee create(Employee employee);
+    EmployeeDTO create(EmployeeDTO employee);
 
-    Employee update(Employee employee, Integer id);
+    EmployeeDTO update(EmployeeDTO employee, Integer id);
 
-    List<Employee> findAll();
+    List<EmployeeDTO> findAll();
 
     void deleteById(Integer id);
 
